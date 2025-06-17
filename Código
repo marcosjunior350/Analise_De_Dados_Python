@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+
+# 1. Ler a planilha (ajuste o nome do arquivo se necessário)
+df = pd.read_excel('Dados.xlsx')
+
+print(df.columns.tolist())
+
+# 2. Garantir que as notas estejam no formato numérico
+df['Nota 1° Semestre'] = pd.to_numeric(df['Nota 1° Semestre'], errors='coerce')
+
+# 3. Análise descritiva
+media = df['Nota 1° Semestre'].mean()
+mediana = df['Nota 1° Semestre'].median()
+moda = df['Nota 1° Semestre'].mode().iloc[0]  # Pode haver mais de uma moda
+desvio_padrao = df['Nota 1° Semestre'].std()
+
+print("Análise Descritiva - Nota 1º Semestre:")
+print(f"Média: {media:.2f}")
+print(f"Mediana: {mediana:.2f}")
+print(f"Moda: {moda:.2f}")
+print(f"Desvio Padrão: {desvio_padrao:.2f}")
+
+# 4. Gráfico de pizza (sexo)
+sexo_counts = df['Sexo'].value_counts()
+
+# Personalização
+colors = ['#66b3ff', '#ff9999']
+explode = (0.05, 0)  # destaque no 1º grupo (geralmente feminino)
+
+plt.figure(figsize=(6, 6))
+plt.pie(sexo_counts, labels=sexo_counts.index, autopct='%1.1f%%',
+        startangle=90, colors=colors, explode=explode, shadow=True)
+plt.title("Distribuição por Sexo")
+plt.axis('equal')  # Formato circular
+plt.show()
